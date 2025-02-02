@@ -1,0 +1,77 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+    <div class="w-9/10 ">
+        <form method="post" action="" id="account-form">
+            {% csrf_token %}
+    
+            {% for error in form.non_field_errors %}
+                <p><span id="error">Select an Account Type</span></p>
+            {% endfor %}
+    
+            <div style="display: none;">
+                {{ form.account_type }}
+            </div>
+    
+            <div class="my-10 py-10">
+                <h1 class="text-5xl text-center font-bold mb-5">Select a Account </h1>
+                <div class="flex flex-row justify-around">
+                    <div class="w-80 rounded bg-gray-200 p-10">
+                        <h2 class="text-4xl">Bug Hunter</h2>
+    
+                        <div class="flex flex-col align-center text-wrap my-10">
+                            <p><i class="fa-solid fa-key"></i> Faster & More Efficient Bug Bounty Programs</p>
+                            <p><i class="fa-solid fa-key mt-2"></i> Standardized & Automated Reward Dispersal</p>
+                            <p><i class="fa-solid fa-key"></i> Upgrade Your Resume with Your CrowdHunt Cybersecurity Testing Rating </p>
+                        </div>
+    
+                        <div class="w-40 bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition duration-300">
+                            <button type="button" data-account-type="{{ form.account_type.0.id_for_label }}" class="submit-button">
+                                Join Today
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="w-96 rounded bg-gray-200 p-10">
+                        <h2 class="text-4xl">Company</h2>
+    
+                        <div class="flex flex-col align-center my-10">
+                            <p><i class="fa-solid fa-key"></i> Fully Managed Bug Bounty Programs</p>
+                            <p><i class="fa-solid fa-key mt-2"></i> Automated Review & Classification of Bugs</p>
+                            <p><i class="fa-solid fa-key "></i> Faster Rewards Dispersal leading to Better Reputation in the Industry</p>
+
+                        </div>
+    
+                        <div class="w-36 bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition duration-300">
+                            <button type="button" data-account-type="{{ form.account_type.1.id_for_label }}" class="submit-button">
+                                Join Today
+                            </button>
+                        </div>
+                    </div>
+    
+                    
+                </div>
+            </div>
+    
+            <script>
+                // Attach click event to all signup buttons
+                document.querySelectorAll('.submit-button').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        // Find the corresponding radio button and check it
+                        const accountType = document.getElementById(this.getAttribute('data-account-type'));
+                        if (accountType) {
+                            accountType.checked = true;
+                        }
+    
+                        // Submit the form
+                        document.getElementById('account-form').submit();
+                    });
+                });
+            </script>
+        </form>
+    </div>
+    
+
+
+{% endblock %}
+

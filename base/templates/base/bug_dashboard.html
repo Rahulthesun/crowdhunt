@@ -1,0 +1,74 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+<div class="flex w-full">
+    <!-- Sticky Sidebar -->
+    <div class="sticky top-0 left-0 w-48 h-screen bg-gray-900 text-white">
+      <ul class="space-y-4 p-4">
+        {% if slug|lower == "hunter" %}
+        <li>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Posts <i class="fa-solid fa-pen-nib"></i> </a>
+        </li>
+        <li>
+          <a href="{% url 'home' 'hunter' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Projects <i class="fa-solid fa-magnifying-glass"></i></a>
+        </li>
+        <li>
+          <a href="{% url 'hunter_profile' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Profile <i class="fa-regular fa-circle-user"></i></a>
+        </li>
+
+        {% else %}
+        <li>
+          <a href="{% url 'create_project' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Create Project <i class="fa-solid fa-pen-nib"></i> </a>
+        </li>
+        <li>
+          <a href="{% url 'home' 'company' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Projects <i class="fa-solid fa-magnifying-glass"></i></a>
+        </li>
+        <li>
+          <a href="{% url 'company_profile' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Profile <i class="fa-regular fa-circle-user"></i></a>
+        </li>
+
+        <li>
+          <a href="{% url 'bug_dashboard' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Bugs <i class="fa-solid fa-bug"></i> </a>
+        </li>
+        {% endif %}
+
+        <li>
+            <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Logout</a>
+        </li>
+        
+      </ul>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="p-20 w-4/5">
+        
+            <h1 class="text-3xl font-bold">Vulnerabilities & Bugs Raised</h1>
+        <div class="grid grid-cols-1 gap-2">
+            {% for bug in bugs %}
+        
+        
+            <a href="{% url 'project_page' project.id  %}">
+                <div class="rounded-sm border-2 bg-gray-100 p-2">
+                    <div >
+                        <h1 class="text-sm"><i class="fa-regular fa-circle-user"></i> {{bug.poster.name}} </h1>
+                        
+                        
+                        <p class="text-gray-600">{{bug.text}}</p>
+                    </div>
+                    
+                   
+                </div>    
+        
+            </a>
+            
+        
+            {% empty %}
+        
+            <p>No Bugs Raised</p>
+        
+            {% endfor %}
+        
+    </div>        
+</div>
+    
+{% endblock %}

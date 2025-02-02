@@ -1,0 +1,64 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+
+
+<div class="flex w-full">
+    <!-- Sticky Sidebar -->
+    <div class="sticky top-0 left-0 w-48 h-screen bg-gray-900 text-white">
+      <ul class="space-y-4 p-4">
+       
+        <li>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Posts <i class="fa-solid fa-pen-nib"></i> </a>
+        </li>
+        <li>
+          <a href="{% url 'home' 'hunter' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Projects <i class="fa-solid fa-magnifying-glass"></i></a>
+        </li>
+        <li>
+          <a href="{% url 'hunter_profile' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Profile <i class="fa-regular fa-circle-user"></i></a>
+        </li>
+
+        
+      </ul>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="p-20 w-4/5">
+        {{request.user}}
+        <div>
+           <h1 class="text-7xl font-bold"><i class="fa-regular fa-circle-user"></i></h1>
+           <h1 class="text-5xl font-bold">{{profile.name}}</h1>
+           <h1 class="text-xl font-semibold">{{profile.education}}</h1>
+        </div>
+       
+                    
+        <p class="text-gray-600">{{profile.description}}</p>
+        <a href="{% url 'edit_hunter_profile' profile.id %}"><button class="rounded-sm font-semibold text-white bg-black px-5 py-1 mt-5 hover:text-black hover:bg-white hover:border-gray-900 ">Edit Profile <i class="fa-solid fa-pen-nib"></i></button></a>
+        
+        <div class="flex flex-row justify-left align-center ">
+            <h1 class="text-6xl font-bold mt-5 p-10 bg-gray-100 mr-5 "  >{{profile.bugs_found}} <span class="text-base">Bugs Found</span></h1>
+            <h1 class="text-6xl font-bold mt-5 p-10 bg-gray-100 mr-5 "  >${{profile.rewards_earned|floatformat}} <span class="text-base">Rewards Earned</span></h1>
+            <h1 class="text-6xl font-bold mt-5 p-10 bg-gray-100 mr-5 "  >{{profile.bugs_found}} <span class="text-base">Projects Participated</span></h1>
+        </div>
+        
+            </div>
+    
+        </div>
+    
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

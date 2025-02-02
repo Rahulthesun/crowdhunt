@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowdhunt - Crowdsourced Cybersecurity Testing Platform</title>
+    <meta name="description" content="Crowdhunt is a leading crowdsourced cybersecurity testing platform, connecting businesses with expert ethical hackers to identify vulnerabilities and secure digital assets.">
+    <meta name="keywords" content="Crowdhunt, Cybersecurity Testing, Ethical Hacking, Bug Bounty, Vulnerability Assessment, Penetration Testing, Security Platform">
+    <meta name="author" content="Crowdhunt Team">
+    <link rel="canonical" href="https://www.crowdhunt.com/">
+    
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Crowdhunt - Crowdsourced Cybersecurity Testing Platform">
+    <meta property="og:description" content="Strengthen your cybersecurity with Crowdhunt’s expert-driven testing platform. Discover vulnerabilities before hackers do.">
+    <meta property="og:image" content="https://www.crowdhunt.com/static/images/og-image.png">
+    <meta property="og:url" content="https://www.crowdhunt.com/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card metadata -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Crowdhunt - Crowdsourced Cybersecurity Testing Platform">
+    <meta name="twitter:description" content="Crowdhunt connects businesses with top ethical hackers to secure your digital environment.">
+    <meta name="twitter:image" content="https://www.crowdhunt.com/static/images/twitter-card.png">
+    
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/853a55ecdc.js" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    input[type="text"] ,input[type="url"], input[type="search"] ,input[type="email"], input[type="password"] , textarea , select{
+        font-size: 15px;
+        background-color: rgb(246, 246, 246);
+        width: 100%;
+        padding: 10px;
+    }
+
+    input[type="text"]:focus ,input[type="email"]:focus , input[type="password"]:focus , textarea:focus , input[type="search"]:focus{
+        outline: none;
+        border: 1.5px solid rgb(161, 161, 161);
+        box-shadow: none;
+    } 
+
+    textarea {
+        height: 100px;
+    }
+</style>
+
+<body class="bg-white">
+        
+        {% block content %}
+
+        {% endblock %}
+
+</body>
+</html>
