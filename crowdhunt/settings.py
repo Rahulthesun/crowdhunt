@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-iio(nv(k%tt154@e!8!#d!uz%pg463(mib0*-l75&8la*1w_s!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["crowdhunt.onrender.com"]
 
 AUTH_USER_MODEL = "users.EmailUser"
 
