@@ -3,9 +3,11 @@ from django.urls import reverse_lazy , reverse
 from django.http import HttpResponse , Http404 , HttpResponseRedirect
 from django.views.generic.edit import FormView , UpdateView , CreateView
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 from django.contrib.auth.mixins import UserPassesTestMixin , LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 from django.db.models import Q
 from .models import HunterProfile , CompanyProfile , ProjectPost , Project
@@ -13,34 +15,48 @@ from .forms import AccountTypeForm , CreateProjectForm , CreatePostForm
 
 # Create your views here.
 def landing_page(request):
-    return render(request , 'base/landing_page.html')
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy("home"))
+    else:
 
-def home(request , slug=None):
+        return render(request , 'base/waitlist_landing.html')
+        #return render(request , 'base/landing_page.html')
+
+def home(request):
     context = {}
     context['projects'] = None
-    if slug:
-        context['slug'] = slug
-        search_query = request.GET.get("search" , "")
-        if search_query:
-            projects = Project.objects.filter(
-            Q(name__icontains=search_query) | Q(description__icontains=search_query)
-        )
-        elif not search_query:
-            projects = Project.objects.filter(is_active = True)
-        if projects.exists():
-            context['projects'] = projects
+    #context['slug'] = slug
+    search_query = request.GET.get("search" , "")
+    if search_query:
+        projects = Project.objects.filter(
+        Q(name__icontains=search_query) | Q(description__icontains=search_query)
+    )
+    elif not search_query:
+        projects = Project.objects.filter(is_active = True)
+    if projects.exists():
+        context['projects'] = projects
+    try:
+        profile = get_object_or_404(HunterProfile , user=request.user)
+    except Http404:
+        raise PermissionDenied
+    else:
+        context['username'] = profile.name
+        return render(request , "base/home.html" , context)
 
-        if slug.upper() == "HUNTER":
-            profile = get_object_or_404(HunterProfile , user = request.user)
-            context['profile'] = profile
+        '''
+          if slug.upper() == "HUNTER":
+        profile = get_object_or_404(HunterProfile , user = request.user)
+        context['profile'] = profile
+        
+    if slug.upper() == "COMPANY":
+        profile = get_object_or_404(CompanyProfile , user = request.user)
+        context['profile'] = profile
+        
+        
+        '''
 
-            
-        if slug.upper() == "COMPANY":
-            profile = get_object_or_404(CompanyProfile , user = request.user)
-            context['profile'] = profile
-            
     
-    return render(request , "base/home.html" , context)
+    
 
 
             
@@ -85,22 +101,27 @@ class AccountType(UserPassesTestMixin , FormView ):
             return True
 
     def handle_no_permission(self):
-        return HttpResponseRedirect(reverse("home" , kwargs={"slug":self.slug}))
+        return HttpResponseRedirect(reverse_lazy("home"))
     
     def get_success_url(self):
-        return reverse("profile_check" , kwargs={"slug":self.slug})
+        return reverse("you")
 
 def profile_checker(request , slug):
     if slug.upper()=="HUNTER":
         profile = get_object_or_404(HunterProfile , user=request.user)
-        return redirect(reverse("edit_hunter_profile" , kwargs={"pk": profile.id}))
+        if profile.name or profile.description or profile.education:
+            return redirect(reverse("home" , kwargs={"slug":"hunter"}))
+        else:
+            return redirect(reverse("edit_hunter_profile" , kwargs={"pk": profile.id}))
     elif slug.upper()=="COMPANY":
         profile = get_object_or_404(CompanyProfile , user=request.user)
+        if profile.name or profile.description or profile.industry:
+            return redirect(reverse("home" , kwargs={"slug":"company"}))
         return redirect(reverse("edit_company_profile" , kwargs={"pk": profile.id}))
         
 class EditHunterProfile(UpdateView):
     model = HunterProfile
-    fields=["name" , "description" , "education"]
+    fields=["profile_image" ,"name" , "description" , "education"]
     template_name="base/edit_profile.html"
     success_url = reverse_lazy("hunter_profile")
 
@@ -108,11 +129,14 @@ class EditHunterProfile(UpdateView):
 def hunter_profile(request):
     try:
         profile = get_object_or_404(HunterProfile , user= request.user)
+        posts = ProjectPost.objects.filter(poster=profile).order_by("-created")
     except Http404 :
         return redirect(reverse_lazy("account_selection"))
     
     context={
-        "profile":profile
+        "profile":profile,
+        "username" : profile.name ,
+        "posts":posts
     }
     return render(request , "base/hunter_profile.html" , context)
 
@@ -140,7 +164,7 @@ class CreatePost(FormView , LoginRequiredMixin):
     
 class EditCompanyProfile(UpdateView):
     model = CompanyProfile
-    fields=["name" ,"industry" , "description"]
+    fields=["profile_image", "name" ,"industry" , "description"]
     template_name="base/edit_profile.html"
     success_url = reverse_lazy("company_profile")
     
@@ -180,12 +204,21 @@ def project_page(request , project_id):
     }
     if hunter_profile.exists():
         context['slug'] = "hunter"
+        context['username'] = hunter_profile[0].name
     elif company_profile.exists():
         context['slug'] = "company"
+        context['username'] = company_profile[0].name
+
     else:
         return Http404
     print(context["slug"])
     return render(request , "base/project_page.html" , context)
+
+def join_project(request , project_id):
+    project = get_object_or_404(Project , id=project_id)
+    project.participants.add(request.user)
+    messages.add_message(request , messages.SUCCESS , f"You have Joined {project.name} !!")
+    return redirect(reverse("project_page" , kwargs={"project_id":project_id}))
 
 def project_post_page(request , project_id , post_id):
     project = get_object_or_404(Project , id=project_id)

@@ -5,34 +5,19 @@
 
 
 <div class="flex w-full">
-    <!-- Sticky Sidebar -->
-    <div class="sticky top-0 left-0 w-48 h-screen bg-gray-900 text-white">
-      <ul class="space-y-4 p-4">
-       
-        <li>
-            <a href="{% url 'create_project' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Create Project<i class="fa-solid fa-pen-nib"></i> </a>
-        </li>
-        <li>
-          <a href="{% url 'home' 'company' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Projects <i class="fa-solid fa-magnifying-glass"></i></a>
-        </li>
-        <li>
-          <a href="{% url 'company_profile' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Profile <i class="fa-regular fa-circle-user"></i></a>
-        </li>
-
-        <li>
-            <a href="{% url 'bug_dashboard' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Bugs <i class="fa-solid fa-bug"></i> </a>
-          </li>
-
-        
-      </ul>
-    </div>
+  
   
     <!-- Main Content -->
     <div class="p-20 w-4/5">
-        {{request.user}}
         <div>
-           <h1 class="text-7xl font-bold"><i class="fa-regular fa-circle-user"></i></h1>
+           <h1 class="text-7xl font-bold">
+            {% if profile.profile_image %}
+            <img class="w-20 border-4 border-gray-900 rounded-full" src="{{profile.profile_image.url}}" alt="pfp">
+            {% endif %}
+            </h1>
+            
            <h1 class="text-5xl font-bold">{{profile.name}}</h1>
+           {{request.user}}
            <h1 class="text-xl font-semibold">{{profile.industry}}</h1>
         </div>
        

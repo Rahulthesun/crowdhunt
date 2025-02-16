@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-iio(nv(k%tt154@e!8!#d!uz%pg463(mib0*-l75&8la*1w_s!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["crowdhunt.onrender.com"]
+ALLOWED_HOSTS = ["crowdhunt.onrender.com" , "127.0.0.1"]
 
 AUTH_USER_MODEL = "users.EmailUser"
 
@@ -120,6 +120,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

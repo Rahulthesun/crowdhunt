@@ -1,0 +1,28 @@
+RATING SYSTEM FOR CROWDHUNT
+
+>TERMS:
+BASE RATING (B.R) ==> 5.000
+C.R ==> Current Rating
+B.M ==> Bug Level Multiplier
+DRM ==> Diminishing Rating Multiplier = 0 (below 9 Rating)
+
+>BM VALUES FOR RATING <=9 :
+    Low Level==> 1.5
+    Medium Level==> 3.2
+    High Level==> 6.0
+
+>DRM MULTIPLIER FOR RATING >9:
+    9.00 - 9.30 ==> 0.85
+    9.30 - 9.60 ==> 0.70
+    9.60 - 9.80 ==> 0.55
+    9.80 - 9.90 ==> 0.40
+    9.90 - 9.95 ==> 0.25
+    9.95 - 10.00 ==> 0.10
+
+RATING HARD LIMIT = 10.000
+
+WHEN BUG IS FOUND & CLEARED FOR BOUNTY:
+    New Rating = C.R + 0.05 * BM * DRM
+
+
+RATING DECAY RATE ALGORITHM : (RUNNING ON SERVER-SIDE SCRIPT USING LAST_ACTIVE)

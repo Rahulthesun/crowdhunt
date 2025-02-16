@@ -2,87 +2,161 @@
 
 
 {% block content %}
-<div class="flex w-full">
     <!-- Sticky Sidebar -->
-    <div class="sticky top-0 left-0 w-48 h-screen bg-gray-900 text-white">
-      <ul class="space-y-4 p-4">
-        {% if slug|lower == "hunter" %}
-        <li>
-            <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Posts <i class="fa-solid fa-pen-nib"></i> </a>
-        </li>
-        <li>
-          <a href="{% url 'home' 'hunter' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Projects <i class="fa-solid fa-magnifying-glass"></i></a>
-        </li>
-        <li>
-          <a href="{% url 'hunter_profile' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Profile <i class="fa-regular fa-circle-user"></i></a>
-        </li>
-
-        {% else %}
-        <li>
-          <a href="{% url 'create_project' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Create Project <i class="fa-solid fa-pen-nib"></i> </a>
-        </li>
-        <li>
-          <a href="{% url 'home' 'company' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Projects <i class="fa-solid fa-magnifying-glass"></i></a>
-        </li>
-        <li>
-          <a href="{% url 'company_profile'  %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Your Profile <i class="fa-regular fa-circle-user"></i></a>
-        </li>
-
-        <li>
-          <a href="{% url 'bug_dashboard' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Bugs <i class="fa-solid fa-bug"></i> </a>
-        </li>
-        {% endif %}
-
-        <li>
-            <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-700 rounded">Logout</a>
-        </li>
-        
-      </ul>
-    </div>
-  
+    {% include 'base/hunter_navbar.html' %}
     <!-- Main Content -->
     <div class="p-20 w-4/5">
-        {{request.user}}
-    
-        <h1 class="text-5xl font-bold">{{project.name}}</h1>
-        <h1 class="text-xl font-semibold"> <i class="fa-regular fa-circle-user"></i> {{project.company.name}} <a href="{{project.website}}"><i class="fa-solid fa-link"></i></a></h1>
-                    
-        <p class="text-gray-600">{{project.description}}</p>
-        {% if slug|lower == "hunter" %}
-        <a href="{% url 'create_post' project.id %}"><button class="rounded-sm font-semibold text-white bg-black px-5 py-1 mt-5 hover:text-black hover:bg-white hover:border-gray-900 ">Post <i class="fa-solid fa-pen-nib"></i></button></a>
-        {% else %}
-        <p>Company Account</p>
-        {% endif %}
-        
-        <h2 class="mt-5 text-3xl font-semibold  ">Posts</h2>            
-        <div class="grid grid-cols-1 gap-2">
-    
-            {% for post in posts %}
-            <div class="rounded-sm border-2 bg-gray-100 p-2 flex flex-row justify-between align-center">
+        <div class="flex flex-row justify-between">
+            <div class="w-2/3">
+                <div class="flex flex-col justify-left align-bottom">
+                    <h1 class="text-7xl font-bold">
+                        {% if project.company.profile_image %}
+                        <img class="w-20 border-4 border-gray-500 rounded-full" src="{{project.company.profile_image.url}}" alt="pfp">
+                        {% else %}
+                        <p class="w-20 border-4 border-gray-500 rounded-full bg-blue-600 text-3xl text-white text-center p-3">
+                            {{project.company.name|slice:":1"}}
+                        </p>
+                        {% endif %}
+                    </h1>
+                    <h1 class="text-5xl font-bold mb-0 ">{{project.name}}</h1>
+                </div>
                 
-               <div>
-                <p class="text-xl font-regular">{{post.text|slice:":60"}}...</p>
-                <p>{{post.poster.name}}</p>
-               </div>
-               
-              
-    
-                    <div>
-                    {% if post.post_type == "DISCUSSION" %}
-                        <button class="text-sm rounded-sm font-semibold text-white bg-blue-800 px-5 py-1 my-auto ">DISCUSSION</button></a>
+                
+                <h1 class="text-xl font-semibold"><a class="underline " href="{{project.website}}">{{project.company.name}}</a> </h1>
+                <a class="text-xl" href="mailto:{{project.company.user.email}}"><p><i class="fa-solid fa-envelope"></i></p></a>
+                <p class="text-gray-600">{{project.description}}</p>
+                {% if slug|lower == "hunter" %}
+                    {% if request.user in project.participants.all %}
+                        <a href="{% url 'create_post' project.id %}"><button class="rounded-full border-2 border-transparent font-semibold text-white bg-black px-5 py-1 mt-5 hover:text-black hover:bg-white hover:border-black ">Post <i class="fa-solid fa-pen-nib"></i></button></a>
                     {% else %}
-                        <button class="text-sm rounded-sm font-semibold text-white bg-red-600 px-5 py-1 my-auto ">BUG</button></a>
+                    <a href="{% url 'join_project' project.id %}"><button class="rounded-full border-2 border-transparent font-semibold text-white bg-black px-5 py-1 mt-5 hover:text-black hover:bg-white hover:border-black ">Join {{project.name}} </button></a>
                     {% endif %}
-                    </div>
-                
-            </div>  
-            {% empty %}
-             <p>No Posts on this Project</p>
-            {% endfor %}    
-    
+                {% else %}
+                <p>Company Account</p>
+                {% endif %}
             </div>
-    
+
+            <!--Bounty Pricing Structure-->
+
+            <div class="w-1/3 h-auto flex flex-col">
+                <div class="bg-gray-100 h-auto py-5 px-5 rounded-xl shadow-md">
+                  <h1  class="w-full mx-auto text-3xl font-bold">Bounty Pricing</h1>
+                  <div class="w-full mx-auto flex flex-col-reverse align-left my-2">
+                    <h1 class="text-3xl font-extrabold mr-5 ">${{project.low_bounty|floatformat}} </h1>
+                    <p class="w-32 text-center text-sm rounded-full font-bold text-white bg-green-600 px-5 py-1 my-auto mb-2">Low Level</p>
+                  </div>
+
+                  <div class="w-full mx-auto flex flex-col-reverse align-left my-2">
+                    <h1 class="text-3xl font-extrabold mr-5 ">${{project.medium_bounty|floatformat}} </h1>
+                    <p class="w-40 text-center text-sm rounded-full font-bold text-white bg-yellow-500 px-5 py-1 my-auto mb-2">Medium Level</p>
+                  </div>
+
+                  <div class="w-full mx-auto flex flex-col-reverse align-left my-2">
+                    <h1 class="text-3xl font-extrabold mr-5 ">${{project.high_bounty|floatformat}}</h1>
+                    <p class="w-32 text-center text-sm rounded-full font-bold text-white bg-red-700 px-2 py-1 my-auto mb-1">High Level</p>
+                  </div>
+              
+                 
+                </div>
+                
+            
+            </div>
+
+
         </div>
+
+       
+        
+
+
+        <!--Actual Post Rendering-->
+        <h2 class="mt-5 text-3xl font-semibold mb-5 ">Posts</h2>
+        <div class="w-full flex flex-row mt-5 justify-between ">
+            <div class="w-2/3 ">
+                            
+                <div class="grid grid-cols-1 gap-5">
+                
+                    {% for post in posts %}
+                    <div class="h-auto rounded-xl border-transparent shadow-md bg-white p-3">
+                        <div>
+                            {% if post.post_type == "DISCUSSION" %}
+                                <button class="text-sm rounded-full font-semibold text-white bg-blue-600 px-5 py-1 my-auto mb-2">DISCUSSION</button></a>
+                            {% else %}
+                                <button class="text-sm rounded-full font-semibold text-white bg-red-700 px-5 py-1 my-auto mb-2">BUG</button></a>
+                            {% endif %}
+                            </div>
+                        
+                       <div>
+                    
+                        <div class="flex flex-row align-center py-2">
+                            <div>
+                            {% if post.poster.profile_image %}
+                            <img class="w-8 border border-gray-500 rounded-full" src="{{post.poster.profile_image.url}}" alt="pfp">
+                            {% else %}
+                            <p class="w-8 border border-gray-500 rounded-full bg-blue-600 text-3xl text-white text-center p-2">
+                                {{post.poster.name|slice:":1"}}
+                            </p>
+                            {% endif %}
+                            </div>
+                            <p class="my-auto ml-2">{{post.poster.name}}</p>
+                        
+                        </div>
+                    
+                        {% if post.image %}
+                            <div class="container">
+                                <img class="w-full md:w-2/5 h-auto mb-2" src="{{post.image.url}}" alt="post image">
+                            </div>
+                        
+                        
+                        {% endif %}
+                        
+                        <p class="text-lg font-regular">{{post.text}}...</p>
+                        
+                        {% if post.post_type == "DISCUSSION" %}
+                            <a href="" class="text-2xl text-gray-600 py-5"><i class="fa-regular fa-comment-dots"></i></a>
+                        {% endif %}
+                        
+                       </div>
+                   
+                   
+                   
+                   
+                    </div>  
+                    {% empty %}
+                     <p>No Posts on this Project</p>
+                    {% endfor %}    
+                
+                
+                </div>
+
+            </div>
+            
+            <!--Right Stats Bar-->
+            <div class="w-1/4 sticky top-0  h-max flex flex-col ">
+                <div class="bg-white h-auto py-10 rounded-xl shadow-md">
+                  <h1  class="w-full md:w-1/2 mx-auto text-3xl font-bold">Stats</h1>
+                  <div class="w-full md:w-1/2 mx-auto flex flex-col align-left my-2">
+                    <h1 class="text-5xl font-bold mr-5 ">20 </h1>
+                    <p class="text-base font-semibold">Bugs Found</p>
+                  </div>
+              
+                  <div class="w-full md:w-1/2 mx-auto flex flex-col align-left my-2">
+                    <h1 class="text-5xl font-bold  mr-5 ">$40</h1>
+                    <p class="text-base font-semibold">Rewards Earned</p>
+                  </div>
+               
+                  <div class="w-full md:w-1/2 mx-auto flex flex-col align-left my-2">
+                    <h1 class="text-5xl font-bold mr-5 ">300</h1>
+                    <p class="text-base font-semibold">Projects Participated</p>
+                  </div>
+                </div>
+                
+            
+            </div>
+
+        </div>
+        
+        
     
     </div>
 </div>

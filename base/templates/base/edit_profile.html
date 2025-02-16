@@ -7,7 +7,7 @@
             <h1 class="text-4xl font-bold mb-8">Edit Profile <i class="fa-solid fa-pen-nib"></i> </h1>
         </div>
         
-        <form class="space-y-6" method="post">
+        <form class="space-y-6" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             {% for field in form %}

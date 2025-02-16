@@ -26,4 +26,4 @@ class CreateProjectForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = ProjectPost
-        fields =['text' , 'post_type']
+        fields =['image','text' , 'post_type']

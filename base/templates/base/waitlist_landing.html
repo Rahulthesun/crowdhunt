@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrowdHunt - Bug Bounty Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+</head>
+
+<style>
+    body {
+        color:white;
+        background-color: #02072E;
+        font-family: "Poppins" , serif;
+    }
+
+    html {
+            scroll-behavior: smooth;
+    }
+
+    ::-webkit-scrollbar {
+            width: 10px;
+            scrollbar-color: rgb(125, 138, 255) #0A0B1A;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #0A0B1A;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #A600FF;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #8400CC;
+    }
+
+        /* Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(125, 138, 255) #0A0B1A;
+    }
+
+    .globe-animation svg {
+            width: 100%;
+            height: 100%;
+            perspective: 50px;
+        }
+
+        .globe-animation circle {
+            stroke: white;
+            stroke-width: 5px;
+            fill: none;
+        }
+
+        .globe-animation .equator {
+            transform: rotateZ(-20deg) rotateX(125deg);
+        }
+
+        .globe-animation .meridian {
+            animation: 1s linear infinite turn;
+            transform: rotateZ(-20deg) rotateX(35deg) rotateY(var(--start));
+        }
+
+        @keyframes turn {
+            100% {
+                transform: rotateZ(-20deg) rotateX(35deg) rotateY(var(--end));
+            }
+        }
+</style>
+<body class="bg-navy-900 text-white min-h-screen">
+    <nav class="container mx-auto px-6 py-8">
+        <div class="flex items-center md:justify-between justify-center">
+            <div class="flex flex-row justify-left">
+                <img class="w-auto h-10 mr-1" src="https://i.ibb.co/FLHb7WPy/Untitled-design-41-removebg-preview.png" alt="logo"> 
+                <h1 class="text-3xl font-bold">Crowdhunt</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:underline">Home</a>
+                <a href="#features" class="hover:underline">Why Join?</a>
+                <a href="#host" class="hover:underline">Host a Project</a>
+                <a href="{% url 'signup' %}" class="hover:text-blue-400">Join Waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6">
+        <!-- Hero Section with Globe -->
+        <section class="flex flex-col md:flex-row items-center justify-between py-10" id="home">
+            <div class="w-full md:w-2/5 mb-8 md:mb-0">
+                <!-- Globe Animation -->
+                <div class="globe-animation w-full h-auto mx-auto">
+                    <svg viewBox="-500 -500 1000 1000">
+                        <circle r="450"></circle>
+                        <circle class="equator" r="450"></circle>
+                        <circle class="meridian" r="450" style="--start:165deg; --end:180deg"></circle>
+                        <circle class="meridian" r="450" style="--start:150deg; --end:165deg"></circle>
+                        <circle class="meridian" r="450" style="--start:135deg; --end:150deg"></circle>
+                        <circle class="meridian" r="450" style="--start:120deg; --end:135deg"></circle>
+                        <circle class="meridian" r="450" style="--start:105deg; --end:120deg"></circle>
+                        <circle class="meridian" r="450" style="--start:90deg; --end:105deg"></circle>
+                        <circle class="meridian" r="450" style="--start:75deg; --end:90deg"></circle>
+                        <circle class="meridian" r="450" style="--start:60deg; --end:75deg"></circle>
+                        <circle class="meridian" r="450" style="--start:45deg; --end:60deg"></circle>
+                        <circle class="meridian" r="450" style="--start:30deg; --end:45deg"></circle>
+                        <circle class="meridian" r="450" style="--start:15deg; --end:30deg"></circle>
+                        <circle class="meridian" r="450" style="--start:0deg; --end:15deg"></circle>
+                    </svg>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2">
+                <h1 class="sm:text-4xl text-3xl font-bold mb-6 w-80">Hunt Bugs , Earn Rewards & Level Up Your Skills With <br> <span style="color:rgb(125, 138, 255); line-height:70px ;" class="text-5xl">AI Bug Bounties</span></h1>
+                <p class="text-gray-300 mb-8">Join Crowdhunt, find vulnerabilities, earn instant rewards, and boost your cybersecurity career with AI Managed Bug Bounties !!</p>
+                <button class="border-2 border-transparent bg-white text-black px-12 py-3 rounded-full hover:border-white hover:bg-transparent hover:text-white transition-colors">Join Waitlist</button>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-16 py-16" id="features">
+            <div>
+                <h2 class="text-4xl font-bold mb-4">Instant Rewards</h2>
+                <p class="text-gray-300">Get paid fast—no more waiting for weeks! Find a bug, report it, and our AI-powered system instantly reviews, classifies, and approves your reward.</p>
+            </div>
+            <div>
+                <h2 class="text-4xl font-bold mb-4">Standardized Rewards</h2>
+                <p class="text-gray-300">No More Che**.com subscriptions or t-shirts as rewards. Every Project hosted on Crowdhunt has a Standard Payment Structure for low, medium & high level bugs.</p>
+            </div>
+
+            <div>
+                <h2 class="text-4xl font-bold mb-4">Rating & Leaderboards</h2>
+                <p class="text-gray-300">Increase your Crowdhunt Rating to get access to better and more exclusive Bug Bounties or even get hired. See where you stand with our leaderboards.</p>
+            </div>
+            <div>
+                <h2 class="text-4xl font-bold mb-4">Learn from Bug Archives</h2>
+                <p class="text-gray-300">Learn from past discoveries—explore previously reported bugs, understand how they were found, and gain insights from real-world vulnerabilities.</p>
+            </div>
+        </section>
+
+        <section class="py-16 flex flex-col  md:flex-row justify-between" id="host">
+            <div class="w-full md:w-1/2 mb-10">
+                <h2 class="text-5xl font-bold mb-4">Want to Host a <br> <span style="color:rgb(125, 138, 255)" class="text-5xl">AI Bug Bounty ?</span> </h2>
+                <p class="text-gray-300 mb-6 text-lg">Got a product? Host a AI managed bug bounty program with us and let top security researchers find vulnerabilities—fast, secure, and hassle-free!</p>
+                <button class="border-2 border-transparent bg-white text-black px-12 py-3 rounded-full hover:border-white hover:bg-transparent hover:text-white transition-colors">Host a Bug Bounty</button>
+            </div>
+            <div class="grid sm:grid-cols-2 grid-cols-1  gap-5 w-full md:w-1/2">
+                <div class="bg-blue-600 rounded-2xl p-8" style="background-color:rgb(125, 138, 255)">
+                    <h3 class="text-xl font-bold mb-4">Fully Managed Bug Bounties</h3>
+                    <p class="text-gray-100 text-sm">Don't lift a Finger : Let our AI Review , Classify & Reward the Bugs Appropriately. Just maintain a bounty balance and setup a bounty structure . We don't get paid our cut unless we find bugs in your tech.</p>
+                </div>
+
+                <div class="bg-blue-600 rounded-2xl p-8" style="background-color:rgb(125, 138, 255)">
+                    <h3 class="text-xl font-bold mb-4">AI Assisted Bug Bounties</h3>
+                    <p class="text-gray-100 text-sm">Let our AI help you make bug classification, analysis, and reporting faster and more efficient, providing clear insights for you to review and approve. You always stay in control.</p>
+                </div>
+                
+            </div>
+            
+        </section>
+    
+        <!-- Updated Skills and Launch Section -->
+        <section class="grid md:grid-cols-2 gap-8 py-16">
+            <div class="border-white border-2 rounded-xl p-8">
+                <h3 class="text-3xl font-bold mb-4">Got the Skills <br> We Need?</h3>
+                <p class="text-gray-300  sm:text-lg text-sm mb-6 h-32 w-72">Marketing, Code, Design, Sales—whatever you do, we have an opportunity for you! Want to work at a startup? Send us your resume via email, and we'll be in touch.</p>
+                <button class="border-2 border-transparent bg-white text-black px-8 py-2 rounded-full hover:border-white hover:bg-transparent hover:text-white transition-colors">Contact Us</button>
+            </div>
+            
+            <div class="border-white border-2 rounded-xl p-8">
+                <h3 class="text-3xl font-bold mb-4">When is CrowdHunt Launching?</h3>
+                <p class="text-gray-300 sm:text-lg text-sm mb-6 h-32 w-72 ">We're building the first version for our early users and actively securing a partner company to host the first bug bounty project on CrowdHunt. Our launch is set for March 30th this year.</p>
+                <button class="border-2 border-transparent bg-white text-black px-8 py-2 rounded-full hover:border-white hover:bg-transparent hover:text-white transition-colors">Learn More</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,4 +1,6 @@
 from django.urls import path 
+from django.conf.urls.static import static
+from django.conf import settings
 from . import views
 from users import views as user_views
 from users.views import EmailLogin , EmailSignup
@@ -7,7 +9,7 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path("", views.landing_page , name="landing_hunter" ),
-    path("home/<slug:slug>/", views.home , name="home" ),
+    path("home/", views.home , name="home" ),
     path("login/", EmailLogin.as_view(next_page="") , name="login" ),
     path("signup/", EmailSignup.as_view() , name="signup" ),
     path("profile_checker/<slug:slug>/" ,views.profile_checker , name="profile_check" ),
@@ -28,7 +30,13 @@ urlpatterns = [
     path("view_profile/company/" , views.company_profile , name="company_profile"),
     path("create_project/company/" , CreateProject.as_view() , name="create_project"),
     path("view_project/<int:project_id>" , views.project_page , name="project_page"),
+    
+    
+    path("join_project/<int:project_id>" , views.join_project , name="join_project"),
+    
     path("bug_dashboard/company/" , views.bug_dashboard , name="bug_dashboard"),
 
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
